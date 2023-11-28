@@ -1,12 +1,13 @@
-#ifndef CLINETE_PRATA_HPP
+#ifndef CLIENTE_PRATA_HPP
 #define CLIENTE_PRATA_HPP
 
 #include "cliente.hpp"
 
 class ClientePrata : public Cliente{
     public:
-        ClientePrata(std::string nome);
-        virtual float calculaDesconto() override;
+        ClientePrata(Cliente* cliente);
+        virtual float calculaDesconto(float valor) override;
+        virtual std::string getNome() override;
 };
 
 #endif
