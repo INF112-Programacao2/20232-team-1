@@ -1,7 +1,7 @@
 #include "../include/data.hpp"
 
 Data::Data(){
-    this->ano = 2023;
+    this->ano = 2000;
     this->mes = 1;
     this->dia = 1;
 }
@@ -13,12 +13,12 @@ Data::Data(int d, int m, int a) : dia(d), mes(m), ano(a){
     }
 }
 
-bool Data::in(Periodo periodo){
-    if(*this >= periodo.getDataInicio() && *this <= periodo.getDataFim()){
-        return true;
-    }
-    return false;
-}
+//bool Data::in(Periodo periodo){
+//    if(*this >= periodo.getDataInicio() && *this <= periodo.getDataFim()){
+//        return true;
+//    }
+//    return false;
+//}
 
 bool Data::dataValida() const {
     if (ano < 1 || mes < 1 || mes > 12 || dia < 1) {
@@ -45,6 +45,13 @@ bool Data::dataValida() const {
 
 std::string Data::getData(){
     return std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(ano);
+}
+
+Data Data::cadastrarData(){
+    int d, m, a;
+    std::cout << "Data(DD MM AAAA): ";
+    std::cin >> d >> m >> a;
+    return Data(d, m, a);
 }
 
 

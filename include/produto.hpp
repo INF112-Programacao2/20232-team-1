@@ -4,25 +4,38 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <vector>
+#include <string>
 #include "periodo.hpp"
+#include "data.hpp"
 
 class Produto{
     private:
+        static int _nextId;
         int _id;
         std::string _nome;
-        double _preco;
+        float _preco;
         float _estoque;
         Periodo _periodoPromocao;
+        float _percentualDesconto;
     public:
-        Produto(int id, std::string nome, double preco, float estoque);
+        Produto(std::string nome, float preco, float estoque);
+        static int nextId();
+        static Produto* cadastrarProduto();
+
+        void setPeriodoPromocao(Periodo periodoPromocao);
+        std::string getPeriodoPromocao();
+        void cadastrarPromocao();
+
+        void setDesconto(float valor);
 
         int getID();
 
         void setNome(std::string nome);
         std::string getNome();
 
-        void setPreco(double preco);
-        double getPreco();
+        void setPreco(float preco);
+        float getPreco(Data dataCompra);
 
         float getEstoque();
         void diminuirEstoque(float qnt);

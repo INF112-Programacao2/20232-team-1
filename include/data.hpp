@@ -1,15 +1,20 @@
-#include <iostream>
-#include "periodo.hpp"
+#ifndef DATA_HPP
+#define DATA_HPP
 
-class Data{
+#include <string>
+#include <iostream>
+
+class Periodo;
+
+class Data {
     private:
         int dia, mes, ano;
     public:
         Data();
         Data(int d, int m, int a);
-
-        bool in(Periodo periodo);
+        //bool in(Periodo periodo);
         std::string getData();
+        static Data cadastrarData();
         bool dataValida() const;
         bool operator==(const Data& outraData) const;
         bool operator!=(const Data& outraData) const;
@@ -17,6 +22,6 @@ class Data{
         bool operator>(const Data& outraData) const;
         bool operator<=(const Data& outraData) const;
         bool operator>=(const Data& outraData) const;
-
 };
 
+#endif
