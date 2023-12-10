@@ -2,14 +2,19 @@
 
 int Venda::_nextId = 0;
 
-Venda::Venda(std::vector<std::pair<Produto*, float>> carrinho, Cliente* cliente, Vendedor* vendedor, Data data, float _totalSemDesconto){
+Venda::Venda(std::vector<std::pair<Produto*, float>> carrinho, Cliente* cliente, Vendedor* vendedor, Data data, std::vector<Cliente*> &todosClientes){
     _id = nextId();
     _carrinho = carrinho;
     _cliente = cliente;
     _vendedor = vendedor;
     _data = data;
-    _totalSemDesconto = _totalSemDesconto;
+    for(std::pair<Produto*, float> item : _carrinho){
+        item.first->diminuirEstoque(item.second);
+    }
+    _totalSemDesconto = calcularPrecoTotal(_carrinho, _data);
     _totalComDesconto = _totalSemDesconto - _cliente->calculaDesconto(_totalSemDesconto);
+    _cliente->realizarCompra(_totalComDesconto, todosClientes);
+    _vendedor->realizarVenda(_totalComDesconto);
 }
 
 Venda::Venda(){
@@ -33,7 +38,7 @@ int Venda::getId(){
 }
 
 Venda* Venda::cadastrarVenda(std::vector<Produto*> &todosProdutos, std::vector<Cliente*> &todosClientes, std::vector<Vendedor*> &todosVendedores){
-    std::vector<std::pair<Produto*, float>> _produtos;
+    std::vector<std::pair<Produto*, float>> _carrinho;
     Cliente* cliente = nullptr;
     Vendedor* vendedor = nullptr;
     Data data;
@@ -91,25 +96,29 @@ Venda* Venda::cadastrarVenda(std::vector<Produto*> &todosProdutos, std::vector<C
                         std::cout << "Id inexistente!" << std::endl;
                     }
                 }
-                std::cout << "Quantidade: ";
-                std::cin >> produto.second;
-                _produtos.push_back(produto);
-                calcularPrecoTotal(_produtos, data, cliente);
+                produto.second = 999999999;
+                while(produto.second > produto.first->getEstoque()){
+                    std::cout << "Quantidade: ";
+                    std::cin >> produto.second;
+                    if(produto.second > produto.first->getEstoque()){
+                        std::cout << "Quantidade indisponível!" << std::endl;
+                    }
+                }
+                _carrinho.push_back(produto);
                 break;
             case 2:
-                
-                Produto::relatorioProdutos(_produtos, data);
-                std::cout << "Total sem desconto: " << _totalSemDesconto << std::endl;
-                std::cout << "Total com desconto: " << _totalComDesconto << std::endl;
+                Produto::relatorioProdutos(_carrinho, data);
+                std::cout << "Total sem desconto: " << calcularPrecoTotal(_carrinho, data) << std::endl;
+                std::cout << "Total com desconto: " << calcularPrecoTotal(_carrinho, data) - cliente->calculaDesconto(calcularPrecoTotal(_carrinho, data)) << std::endl;
                 break;
             case 3:
-                return new Venda(_produtos, cliente, vendedor, data, _totalSemDesconto);
+                return new Venda(_carrinho, cliente, vendedor, data, todosClientes);
                 break;
             case 4:
                 break;
         }
     }
-
+    return nullptr;
 
 }
 
@@ -118,14 +127,14 @@ int Venda::nextId(){
 }
 
 
-void Venda::calcularPrecoTotal(std::vector<std::pair<Produto*, float>> &carrinho, Data &data, Cliente* cliente){
-    _totalSemDesconto = 0;
+float Venda::calcularPrecoTotal(std::vector<std::pair<Produto*, float>> &carrinho, Data &data){
+    float totalSemDesconto = 0;
     
     for(std::pair<Produto*, float> produto : carrinho){
-        _totalSemDesconto += produto.first->getPreco(data) * produto.second;
+        totalSemDesconto += produto.first->getPreco(data) * produto.second;
     }
 
-    _totalComDesconto = _totalSemDesconto - cliente->calculaDesconto(_totalSemDesconto);
+    return totalSemDesconto;
 }
 
 float Venda::getValor(){
@@ -150,7 +159,7 @@ std::vector<std::pair<Produto*, float>> Venda::getCarrinho(){
 
 
 
-void relatorioVendas(std::vector<Venda*> &vendas){
+void Venda::relatorioVendas(std::vector<Venda*> &vendas){
     int i = 0;
     while( i < 51){
         std::cout << "-";
@@ -159,7 +168,7 @@ void relatorioVendas(std::vector<Venda*> &vendas){
     std::cout << std::endl;
     std::cout << std::setw(6) << "Id" << std::setw(15) << "Cliente" << std::setw(15) << "Vendedor" << std::setw(15) << "Total Comprado" << std::endl;
     for(Venda* venda : vendas){
-        std::cout << std::setw(6) << venda->getId() << std::setw(15) << venda->getCliente()->getNome() << std::setw(15) << venda->getVendedor() << std::setw(15) << venda->getValor() << std::endl;
+        std::cout << std::setw(6) << venda->getId() << std::setw(15) << venda->getCliente()->getNome() << std::setw(15) << venda->getVendedor()->getNome() << std::setw(15) << venda->getValor() << std::endl;
     }
     i = 0;
     while( i < 51){

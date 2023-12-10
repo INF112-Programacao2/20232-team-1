@@ -11,6 +11,10 @@ Cliente::Cliente(std::string nome):
 
 Cliente::Cliente(){}
 
+Cliente::~Cliente(){
+    delete this;
+}
+
 Cliente::Cliente(int id, std::string nome){
     _id = id;
     if(_id >= _nextId)
@@ -39,10 +43,10 @@ Cliente* Cliente::cadastrarCliente(){
 }
 
 
-void Cliente::realizarCompra(Venda* venda, std::vector<Cliente*> &clientes){
+void Cliente::realizarCompra(float valor, std::vector<Cliente*> &clientes){
 
-    _totalComprado += venda->getValor();
-    _compras.push_back(venda);
+    _totalComprado += valor;
+    //_compras.push_back(venda);
     atualizarNivelCliente(clientes);
 }
 
@@ -50,9 +54,9 @@ void Cliente::atualizarNivelCliente(std::vector<Cliente*> &clientes){
     if(_totalComprado >= 5000){
         ClienteOuro* clienteOuro = new ClienteOuro(this); // Create a new ClienteOuro object using the data from the existing Cliente object
         // Atualiza o vetor clientes com o novo objeto ClienteOuro
-        for (int i = 0; i < clientes.size(); i++) {
-            if (clientes[i] == this) {
-                clientes[i] = clienteOuro;
+        for (Cliente* cliente : clientes) {
+            if (cliente == this) {
+                cliente = clienteOuro;
                 break;
             }
         }
@@ -60,9 +64,9 @@ void Cliente::atualizarNivelCliente(std::vector<Cliente*> &clientes){
     } else if(_totalComprado >= 1000){
         ClientePrata* clientePrata = new ClientePrata(this);
         // Atualiza o vetor clientes com o novo objeto ClientePrata
-        for (int i = 0; i < clientes.size(); i++) {
-            if (clientes[i] == this) {
-                clientes[i] = clientePrata;
+        for (Cliente* cliente : clientes) {
+            if (cliente == this) {
+                cliente = clientePrata;
                 break;
             }
         }

@@ -9,6 +9,9 @@ Produto::Produto(std::string nome, float preco, float estoque) :
 
 Produto::Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim){
     _id = id;
+    if(_id >= _nextId){
+        _nextId = _id + 1;
+    }
     _nome = nome;
     _preco = preco;
     _estoque = estoque;
@@ -34,9 +37,9 @@ void Produto::diminuirEstoque(float qnt){
 }
 
 Produto* Produto::getProdutoById(int id, std::vector<Produto*> &produtos){
-    for(int i = 0; i < produtos.size(); i++){
-        if(produtos[i]->getID() == id)
-            return produtos[i];
+    for(Produto* produto : produtos){
+        if(produto->getID() == id)
+            return produto;
     }
     return nullptr;
 }
@@ -94,7 +97,6 @@ float Produto::getPrecoSemDesconto(){
 }
 
 Produto* Produto::cadastrarProduto(){
-    int id;
     std::string nome;
     float preco;
     float estoque;

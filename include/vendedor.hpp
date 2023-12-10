@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
-#include "venda.hpp"
+//#include "venda.hpp"
 
 class Vendedor{
     protected:
@@ -12,7 +12,7 @@ class Vendedor{
         int _id;
         std::string _nome;
         float _totalVendido;
-        std::vector<Venda*> _vendas;
+        //std::vector<Venda*> _vendas;
     public:
         Vendedor(std::string nome);
         Vendedor(int id, std::string nome);
@@ -23,8 +23,9 @@ class Vendedor{
 
         static int nextId();
 
-        void realizarVenda(Venda* venda);
+        void realizarVenda(float valor);
         
+        float getTotalVendido();
 
         int getID();
 

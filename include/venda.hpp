@@ -23,14 +23,14 @@ class Venda {
         float _totalComDesconto;
     public:
         Venda();
-        Venda(std::vector<std::pair<Produto*, float>>, Cliente* cliente, Vendedor* vendedor, Data data, float totalSemDesconto);
+        Venda(std::vector<std::pair<Produto*, float>>, Cliente* cliente, Vendedor* vendedor, Data data, std::vector<Cliente*> &todosClientes);
 
         Venda(int id, Cliente* cliente, Vendedor* vendedor, int dia, int mes, int ano, float totalSemDesconto);
 
         static int nextId();
-        Venda* cadastrarVenda(std::vector<Produto*> &todosProdutos, std::vector<Cliente*> &todosClientes, std::vector<Vendedor*> &todosVendedores);
+        static Venda* cadastrarVenda(std::vector<Produto*> &todosProdutos, std::vector<Cliente*> &todosClientes, std::vector<Vendedor*> &todosVendedores);
         int getId();
-        void calcularPrecoTotal(std::vector<std::pair<Produto*, float>> &carrinho, Data &data, Cliente* cliente);
+        static float calcularPrecoTotal(std::vector<std::pair<Produto*, float>> &carrinho, Data &data);
 
         float getValor();
 

@@ -40,26 +40,30 @@ std::string Vendedor::getNome(){
 
 void Vendedor::relatorioVendedores(std::vector<Vendedor*> &todosVendedores){
     int i = 0;
-    while( i < 21){
+    while( i < 36){
         std::cout << "-";
         i++;
     }
     std::cout << std::endl;
-    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::endl;
+    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Total Vendido" << std::endl;
     for(Vendedor* vendedor : todosVendedores){
-        std::cout << std::setw(6) << vendedor->getID() << std::setw(15) << vendedor->getNome() << std::endl;
+        std::cout << std::setw(6) << vendedor->getID() << std::setw(15) << vendedor->getNome() << std::setw(15) << vendedor->getTotalVendido() << std::endl;
     }
     i = 0;
-    while( i < 21){
+    while( i < 36){
         std::cout << "-";
         i++;
     }
     std::cout << std::endl;
 }
 
-void Vendedor::realizarVenda(Venda* venda){
-    _totalVendido += venda->getValor();
-    _vendas.push_back(venda);
+float Vendedor::getTotalVendido(){
+    return _totalVendido;
+}
+
+void Vendedor::realizarVenda(float valor){
+    _totalVendido += valor;
+    //_vendas.push_back(venda);
 }
 
 Vendedor* Vendedor::getVendedorById(int id, std::vector<Vendedor*> &todosVendedores){

@@ -1,12 +1,19 @@
 #include "../include/gerenciador.hpp"
 
 Gerenciador::~Gerenciador(){
-    for(int i = 0; i < clientes.size(); i++){
-        delete clientes[i];
+    for(Cliente* cliente : clientes){
+        delete cliente;
     }
-    for(int i = 0; i < produtos.size(); i++){
-        delete produtos[i];
+    for(Produto* produto : produtos){
+        delete produto;
     }
+    for(Venda* venda : vendas){
+        delete venda;
+    }
+    for(Vendedor* vendedor : vendedores){
+        delete vendedor;
+    }
+
 }
 
 const char* IdInexistente::what() const noexcept {
@@ -14,14 +21,6 @@ const char* IdInexistente::what() const noexcept {
 }
 
 
-
-Cliente* Gerenciador::getClienteById(int id){
-    for(int i = 0; i < clientes.size(); i++){
-        if(clientes[i]->getID() == id)
-            return clientes[i];
-    }
-    throw IdInexistente();
-}
 
 void Gerenciador::carregarRegistros() {
     // Ler registros de clientes do arquivo de texto "clientes.txt"
@@ -61,8 +60,6 @@ void Gerenciador::carregarRegistros() {
 
     // Ler registros de vendas do arquivo de texto "vendas.txt"
     std::ifstream vendasFile("vendas.txt");
-    int idCliente;
-    int idVendedor;
     int idVenda;
     float valorVenda;
     int dia, mes, ano;
@@ -79,34 +76,34 @@ void Gerenciador::carregarRegistros() {
 
 void Gerenciador::realizarVenda(int id, Cliente* cliente, Vendedor* vendedor, int dia, int mes, int ano, float valorVenda){
     Venda* venda = new Venda(id, cliente, vendedor, dia, mes, ano, valorVenda);
-    vendedor->realizarVenda(venda);
-    cliente->realizarCompra(venda, clientes);
+    vendedor->realizarVenda(venda->getValor());
+    cliente->realizarCompra(venda->getValor(), clientes);
     inserirVenda(venda);
 }
 
 void Gerenciador::salvarRegistros(){
     // Gravar registros de clientes no arquivo de texto "clientes.txt"
     std::ofstream clientesFile("clientes.txt");
-    for(int i = 0; i < clientes.size(); i++){
-        clientesFile << clientes[i]->getID() << " " << clientes[i]->getNome() << std::endl;
+    for(Cliente* cliente : clientes){
+        clientesFile << cliente->getID() << " " << cliente->getNome() << std::endl;
     }
     clientesFile.close();
 
     std::ofstream vendedoresFile("vendedores.txt");
-    for(int i = 0; i < vendedores.size(); i++){
-        vendedoresFile << vendedores[i]->getID() << " " << vendedores[i]->getNome() << std::endl;
+    for(Vendedor* vendedor : vendedores){
+        vendedoresFile << vendedor->getID() << " " << vendedor->getNome() << std::endl;
     }
     vendedoresFile.close();
 
     std::ofstream produtosFile("produtos.txt");
-    for(int i = 0; i < produtos.size(); i++){
-        produtosFile << produtos[i]->getID() << " " << produtos[i]->getNome() << " " << produtos[i]->getPrecoSemDesconto() << " " << produtos[i]->getEstoque() << " " << produtos[i]->getPeriodoPromocao() << std::endl;
+    for(Produto* produto : produtos){
+        produtosFile << produto->getID() << " " << produto->getNome() << " " << produto->getPrecoSemDesconto() << " " << produto->getEstoque() << " " << produto->getPeriodoPromocao() << std::endl;
     }
     produtosFile.close();
 
     std::ofstream vendasFile("vendas.txt");
-    for(int i = 0; i < vendas.size(); i++){
-        vendasFile << vendas[i]->getId() << " " << vendas[i]->getCliente()->getID() << " " << vendas[i]->getVendedor()->getID() << " " << vendas[i]->getValor() << " " << vendas[i]->getData() << std::endl;
+    for(Venda* venda : vendas){
+        vendasFile << venda->getId() << " " << venda->getCliente()->getID() << " " << venda->getVendedor()->getID() << " " << venda->getValor() << " " << venda->getData() << std::endl;
     }
     vendasFile.close();
 
@@ -126,13 +123,6 @@ void Gerenciador::inserirVenda(Venda* venda){
 }
 
 
-Produto* Gerenciador::getProdutoById(int id){
-    for(int i = 0; i < produtos.size(); i++){
-        if(produtos[i]->getID() == id)
-            return produtos[i];
-    }
-    throw IdInexistente();
-}
 void Gerenciador::inserirCliente(Cliente* cliente){
     // Verifica se o cliente é inválido
     if(cliente == nullptr) {
@@ -155,35 +145,36 @@ void Gerenciador::inserirProduto(Produto* produto){
 
 
 void Gerenciador::criarMenu(){
-    int menuSelect;
-    std::cout << "1 - Menu Produtos" << std::endl;
-    std::cout << "2 - Menu Clientes" << std::endl;
-    std::cout << "3 - Menu Vendedores" << std::endl;
-    std::cout << "4 - Menu Vendas" << std::endl;
-    std::cout << "5 - Sair" << std::endl;
+    while(true){
+        int menuSelect;
+        std::cout << "1 - Menu Produtos" << std::endl;
+        std::cout << "2 - Menu Clientes" << std::endl;
+        std::cout << "3 - Menu Vendedores" << std::endl;
+        std::cout << "4 - Menu Vendas" << std::endl;
+        std::cout << "5 - Sair" << std::endl;
 
-    std::cout << "Selecione uma opção: ";
-    std::cin >> menuSelect;
-    switch(menuSelect){
-        case 1:
-            menuProdutos();
-            break;
-        case 2:
-            menuClientes();
-            break;
-        case 3:
-            menuVendedores();
-            break;
-        case 4:
-            menuVendas();
-            break;
-        case 5:
-            fecharPrograma();
-            break;
-        default:
-            std::cout << "Opção inválida!" << std::endl;
-            criarMenu();
-            break;
+        std::cout << "Selecione uma opção: ";
+        std::cin >> menuSelect;
+        switch(menuSelect){
+            case 1:
+                menuProdutos();
+                break;
+            case 2:
+                menuClientes();
+                break;
+            case 3:
+                menuVendedores();
+                break;
+            case 4:
+                menuVendas();
+                break;
+            case 5:
+                fecharPrograma();
+                break;
+            default:
+                std::cout << "Opção inválida!" << std::endl;
+                break;
+        }
     }
     
 }
@@ -351,7 +342,8 @@ void Gerenciador::menuVendasRelatorios(){
 }
 
 void Gerenciador::menuVendasCadastrar(){
-    Venda* venda = venda->cadastrarVenda(produtos, clientes, vendedores);
+    Venda* venda;
+    venda = venda->cadastrarVenda(produtos, clientes, vendedores);
     inserirVenda(venda);
 }
 
@@ -380,9 +372,11 @@ void Gerenciador::fecharPrograma(){
 
 
 void Gerenciador::removerCliente(int id){
-    for(int i = 0; i < clientes.size(); i++){
-        if(clientes[i]->getID() == id){
-            delete clientes[i];
+    int i = 0;
+    for(Cliente* cliente : clientes){
+        i++;
+        if(cliente->getID() == id){
+            delete cliente;
             clientes.erase(clientes.begin() + i);
             return;
         }
@@ -391,9 +385,11 @@ void Gerenciador::removerCliente(int id){
 }
 
 void Gerenciador::removerVendedor(int id){
-    for(int i = 0; i < vendedores.size(); i++){
-        if(vendedores[i]->getID() == id){
-            delete vendedores[i];
+    int i = 0;
+    for(Vendedor* vendedor : vendedores){
+        i++;
+        if(vendedor->getID() == id){
+            delete vendedor;
             vendedores.erase(vendedores.begin() + i);
             return;
         }
@@ -402,9 +398,11 @@ void Gerenciador::removerVendedor(int id){
 }
 
 void Gerenciador::removerProduto(int id){
-    for(int i = 0; i < produtos.size(); i++){
-        if(produtos[i]->getID() == id){
-            delete produtos[i];
+    int i = 0;
+    for(Produto* produto : produtos){
+        i++;
+        if(produto->getID() == id){
+            delete produto;
             produtos.erase(produtos.begin() + i);
             return;
         }
@@ -413,11 +411,11 @@ void Gerenciador::removerProduto(int id){
 }
 
 void Gerenciador::removerVenda(int id){
-    for(int i = 0; i < vendas.size(); i++){
-        if(vendas[i]->getId() == id){
-            
-
-            delete vendas[i];
+    int i = 0;
+    for(Venda* venda : vendas){
+        i++;
+        if(venda->getId() == id){
+            delete venda;
             vendas.erase(vendas.begin() + i);
             return;
         }

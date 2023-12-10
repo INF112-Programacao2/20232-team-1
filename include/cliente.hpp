@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <vector>
-#include "venda.hpp"
+//#include "venda.hpp"
+#include <iomanip>
 
 class Cliente{
     protected:
@@ -11,9 +12,9 @@ class Cliente{
         int _id;
         std::string _nome;
         float _totalComprado;
-        std::vector<Venda*> _compras;
+        //std::vector<Venda*> _compras;
     public:
-
+        virtual ~Cliente();
         Cliente();
         Cliente(std::string nome);
         Cliente(int id, std::string nome);
@@ -25,7 +26,7 @@ class Cliente{
 
         static int nextId();
  
-        void realizarCompra(Venda* venda, std::vector<Cliente*> &clientes);
+        void realizarCompra(float valor, std::vector<Cliente*> &clientes);
         void atualizarNivelCliente(std::vector<Cliente*> &clientes);
 
         int getID();

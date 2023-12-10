@@ -34,10 +34,6 @@ class Gerenciador{
         void removerVendedor(int id);
         void removerVenda(int id);
 
-        Cliente* getClienteById(int id);
-        Produto* getProdutoById(int id);
-        Venda* getVendaById(int id);
-
         void carregarRegistros();
         void salvarRegistros();
 

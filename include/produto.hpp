@@ -37,10 +37,10 @@ class Produto{
 
         int getID();
 
-        void setNome(std::string nome);
+        //void setNome(std::string nome);
         std::string getNome();
 
-        void setPreco(float preco);
+        //void setPreco(float preco);
         float getPreco(Data dataCompra);
 
         float getEstoque();
