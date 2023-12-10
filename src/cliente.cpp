@@ -31,15 +31,17 @@ Cliente* Cliente::cadastrarCliente(){
 }
 
 
-void Cliente::realizarCompra(float valor, std::vector<Cliente*> &clientes){
-    _totalComprado += valor;
+void Cliente::realizarCompra(Venda* venda, std::vector<Cliente*> &clientes){
+
+    _totalComprado += venda->getValor();
+    _compras.push_back(venda);
     atualizarNivelCliente(clientes);
 }
 
 void Cliente::atualizarNivelCliente(std::vector<Cliente*> &clientes){
     if(_totalComprado >= 5000){
-        ClienteOuro* clienteOuro = new ClienteOuro(this); // Create a new ClientePrata object using the data from the existing Cliente object
-        // Atualiza o vetor clientes com o novo objeto ClientePrata
+        ClienteOuro* clienteOuro = new ClienteOuro(this); // Create a new ClienteOuro object using the data from the existing Cliente object
+        // Atualiza o vetor clientes com o novo objeto ClienteOuro
         for (int i = 0; i < clientes.size(); i++) {
             if (clientes[i] == this) {
                 clientes[i] = clienteOuro;
@@ -61,6 +63,34 @@ void Cliente::atualizarNivelCliente(std::vector<Cliente*> &clientes){
     
     
 }
+
+Cliente* Cliente::getClienteById(int id, std::vector<Cliente*> &clientes){
+    for(Cliente* cliente : clientes){
+        if(cliente->getID() == id)
+            return cliente;
+    }
+    return nullptr;
+}
+
+void Cliente::relatorioClientes(std::vector<Cliente*> &clientes){
+    int i = 0;
+    while( i < 36){
+        std::cout << "-";
+        i++;
+    }
+    std::cout << std::endl;
+    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Total Comprado" << std::endl;
+    for(Cliente* cliente : clientes){
+        std::cout << std::setw(6) << cliente->getID() << std::setw(15) << cliente->getNome() << std::setw(15) << cliente->getTotalComprado() << std::endl;
+    }
+    i = 0;
+    while( i < 36){
+        std::cout << "-";
+        i++;
+    }
+    std::cout << std::endl;
+}
+
 
 std::string Cliente::getNome(){
     return _nome;

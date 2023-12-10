@@ -20,6 +20,22 @@ Data::Data(int d, int m, int a) : dia(d), mes(m), ano(a){
 //    return false;
 //}
 
+
+Data Data::dataHoje(){
+    // Get current time
+    std::time_t current_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+    // Convert current time to struct tm
+    std::tm* time_info = std::localtime(&current_time);
+
+    // Extract day, month, and year as integers
+    int day = time_info->tm_mday;
+    int month = time_info->tm_mon + 1; // tm_mon is zero-based
+    int year = time_info->tm_year + 1900; // tm_year is years since 1900
+
+    return Data(day, month, year);
+}
+
 bool Data::dataValida() const {
     if (ano < 1 || mes < 1 || mes > 12 || dia < 1) {
         return false;

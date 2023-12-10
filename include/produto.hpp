@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <vector>
 #include <string>
+#include <iomanip>
 #include "periodo.hpp"
 #include "data.hpp"
 
@@ -39,6 +40,10 @@ class Produto{
 
         float getEstoque();
         void diminuirEstoque(float qnt);
+
+        Produto* getProdutoById(int id, std::vector<Produto*> &produtos);
+
+        void relatorioProdutos(std::vector<Produto*> &produtos, Data data);
 };
 
 class EstoqueInsuficienteException : public std::exception {

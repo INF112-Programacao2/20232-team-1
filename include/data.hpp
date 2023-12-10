@@ -3,13 +3,17 @@
 
 #include <string>
 #include <iostream>
+#include <ctime>
+#include <chrono>
 
 class Periodo;
 
 class Data {
     private:
+    
         int dia, mes, ano;
     public:
+        static Data dataHoje();
         Data();
         Data(int d, int m, int a);
         //bool in(Periodo periodo);

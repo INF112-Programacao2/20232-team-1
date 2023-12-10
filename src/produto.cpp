@@ -20,6 +20,38 @@ void Produto::diminuirEstoque(float qnt){
     
 }
 
+Produto* Produto::getProdutoById(int id, std::vector<Produto*> &produtos){
+    for(int i = 0; i < produtos.size(); i++){
+        if(produtos[i]->getID() == id)
+            return produtos[i];
+    }
+    return nullptr;
+}
+
+
+void Produto::relatorioProdutos(std::vector<Produto*> &produtos, Data data){
+    int i = 0;
+    while( i < 36){
+        std::cout << "-";
+        i++;
+    }
+    std::cout << std::endl;
+    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Preço" << std::endl;
+    for(Produto* produto : produtos){
+        std::cout << std::setw(6) << produto->getID() << std::setw(15) << produto->getNome() << std::setw(15) << produto->getPreco(data) << std::endl;
+    }
+    i = 0;
+    while( i < 36){
+        std::cout << "-";
+        i++;
+    }
+    std::cout << std::endl;
+}
+
+std::string Produto::getNome(){
+    return _nome;
+}
+
 Produto* Produto::cadastrarProduto(){
     int id;
     std::string nome;

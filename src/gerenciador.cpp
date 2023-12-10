@@ -9,6 +9,10 @@ Gerenciador::~Gerenciador(){
     }
 }
 
+const char* IdInexistente::what() const noexcept {
+    return "ID inexistente";
+}
+
 
 
 Cliente* Gerenciador::getClienteById(int id){
@@ -16,7 +20,7 @@ Cliente* Gerenciador::getClienteById(int id){
         if(clientes[i]->getID() == id)
             return clientes[i];
     }
-    return nullptr;
+    throw IdInexistente();
 }
 
 
@@ -25,7 +29,7 @@ Produto* Gerenciador::getProdutoById(int id){
         if(produtos[i]->getID() == id)
             return produtos[i];
     }
-    return nullptr;
+    throw IdInexistente();
 }
 void Gerenciador::inserirCliente(Cliente* cliente){
     // Verifica se o cliente é inválido
