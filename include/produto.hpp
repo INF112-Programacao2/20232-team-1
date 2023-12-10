@@ -21,12 +21,17 @@ class Produto{
         float _percentualDesconto;
     public:
         Produto(std::string nome, float preco, float estoque);
+        Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim);
+
+
+
         static int nextId();
         static Produto* cadastrarProduto();
 
         void setPeriodoPromocao(Periodo periodoPromocao);
         std::string getPeriodoPromocao();
         void cadastrarPromocao();
+        float getPrecoSemDesconto();
 
         void setDesconto(float valor);
 
@@ -41,9 +46,10 @@ class Produto{
         float getEstoque();
         void diminuirEstoque(float qnt);
 
-        Produto* getProdutoById(int id, std::vector<Produto*> &produtos);
+        static Produto* getProdutoById(int id, std::vector<Produto*> &produtos);
 
-        void relatorioProdutos(std::vector<Produto*> &produtos, Data data);
+        static void relatorioProdutos(std::vector<Produto*> &produtos, Data data);
+        static void relatorioProdutos(std::vector<std::pair<Produto*, float>> &produtos, Data data);
 };
 
 class EstoqueInsuficienteException : public std::exception {

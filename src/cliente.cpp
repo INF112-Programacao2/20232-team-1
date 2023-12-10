@@ -11,6 +11,14 @@ Cliente::Cliente(std::string nome):
 
 Cliente::Cliente(){}
 
+Cliente::Cliente(int id, std::string nome){
+    _id = id;
+    if(_id >= _nextId)
+        _nextId = _id + 1;
+    _nome = nome;
+    _totalComprado = 0;
+}
+
 
 int Cliente::nextId(){
     return _nextId++;

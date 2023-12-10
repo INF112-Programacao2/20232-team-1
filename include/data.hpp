@@ -16,6 +16,11 @@ class Data {
         static Data dataHoje();
         Data();
         Data(int d, int m, int a);
+
+        int getDia();
+        int getMes();
+        int getAno();
+
         //bool in(Periodo periodo);
         std::string getData();
         static Data cadastrarData();

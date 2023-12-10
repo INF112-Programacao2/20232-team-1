@@ -16,8 +16,9 @@ class Cliente{
 
         Cliente();
         Cliente(std::string nome);
+        Cliente(int id, std::string nome);
 
-        Cliente* getClienteById(int id, std::vector<Cliente*> &clientes);
+        static Cliente* getClienteById(int id, std::vector<Cliente*> &clientes);
 
 
         static Cliente* cadastrarCliente();
@@ -35,7 +36,7 @@ class Cliente{
 
         virtual float calculaDesconto(float valor);
 
-        void relatorioClientes(std::vector<Cliente*> &clientes);
+        static void relatorioClientes(std::vector<Cliente*> &clientes);
 };
 
 #endif

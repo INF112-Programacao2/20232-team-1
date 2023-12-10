@@ -8,12 +8,9 @@
 
 int main(){
 
-    Produto* produto = Produto::cadastrarProduto();
-    Gerenciador gerenciador;
-    gerenciador.inserirProduto(produto);
-    gerenciador.getProdutoById(0)->cadastrarPromocao();
-    Data dataHoje(26, 11, 2023);
-    std::cout << gerenciador.getProdutoById(0)->getPreco(dataHoje) << std::endl;
+    Gerenciador* gerenciador = new Gerenciador();
+
+    gerenciador->criarMenu();
     
 
     return 0;

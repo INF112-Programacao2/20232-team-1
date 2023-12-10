@@ -14,8 +14,12 @@ class Vendedor{
         float _totalVendido;
         std::vector<Venda*> _vendas;
     public:
-        Vendedor* getVendedorById(int idVendedor, std::vector<Vendedor*> &todosVendedores);
-        void relatorioVendedores(std::vector<Vendedor*> &todosVendedores);
+        Vendedor(std::string nome);
+        Vendedor(int id, std::string nome);
+
+        static Vendedor* cadastrarVendedor();
+        static Vendedor* getVendedorById(int idVendedor, std::vector<Vendedor*> &todosVendedores);
+        static void relatorioVendedores(std::vector<Vendedor*> &todosVendedores);
 
         static int nextId();
 

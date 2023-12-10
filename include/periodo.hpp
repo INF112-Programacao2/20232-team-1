@@ -18,6 +18,8 @@ class Periodo{
         Data getDataInicio();
         Data getDataFim();
 
+        
+
         std::string getPeriodo();
 
         static Periodo cadastroPeriodo();

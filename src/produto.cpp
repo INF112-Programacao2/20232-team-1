@@ -6,6 +6,19 @@ Produto::Produto(std::string nome, float preco, float estoque) :
         _id(_nextId), _nome(nome), _preco(preco), _estoque(estoque), _percentualDesconto(0.1) {};
 
 
+
+Produto::Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim){
+    _id = id;
+    _nome = nome;
+    _preco = preco;
+    _estoque = estoque;
+    Data inicioPromocao = Data(diaInicio, mesInicio, anoInicio);
+    Data fimPromocao = Data(diaFim, mesFim, anoFim);
+    _periodoPromocao = Periodo(inicioPromocao, fimPromocao);
+    _percentualDesconto = 0.1;
+
+}
+
 int Produto::nextId(){
     return _nextId++;
 }
@@ -31,17 +44,36 @@ Produto* Produto::getProdutoById(int id, std::vector<Produto*> &produtos){
 
 void Produto::relatorioProdutos(std::vector<Produto*> &produtos, Data data){
     int i = 0;
-    while( i < 36){
+    while( i < 44){
         std::cout << "-";
         i++;
     }
     std::cout << std::endl;
-    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Preço" << std::endl;
+    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Preço" << std::setw(8) << "Estoque" << std::endl;
     for(Produto* produto : produtos){
-        std::cout << std::setw(6) << produto->getID() << std::setw(15) << produto->getNome() << std::setw(15) << produto->getPreco(data) << std::endl;
+        std::cout << std::setw(6) << produto->getID() << std::setw(15) << produto->getNome() << std::setw(15) << produto->getPreco(data) << std::setw(8) << produto->getEstoque() << std::endl;
     }
     i = 0;
-    while( i < 36){
+    while( i < 44){
+        std::cout << "-";
+        i++;
+    }
+    std::cout << std::endl;
+}
+
+void Produto::relatorioProdutos(std::vector<std::pair<Produto*, float>> &produtos, Data data){
+    int i = 0;
+    while( i < 44){
+        std::cout << "-";
+        i++;
+    }
+    std::cout << std::endl;
+    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Total" << std::setw(8) << "Qtde" << std::endl;
+    for(std::pair<Produto*, float> produto : produtos){
+        std::cout << std::setw(6) << produto.first->getID() << std::setw(15) << produto.first->getNome() << std::setw(15) << produto.first->getPreco(data) * produto.second << std::setw(8) << produto.second << std::endl;
+    }
+    i = 0;
+    while( i < 44){
         std::cout << "-";
         i++;
     }
@@ -50,6 +82,15 @@ void Produto::relatorioProdutos(std::vector<Produto*> &produtos, Data data){
 
 std::string Produto::getNome(){
     return _nome;
+}
+
+float Produto::getEstoque(){
+    return _estoque;
+}
+
+
+float Produto::getPrecoSemDesconto(){
+    return _preco;
 }
 
 Produto* Produto::cadastrarProduto(){

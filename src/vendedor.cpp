@@ -7,8 +7,30 @@ int Vendedor::nextId(){
     return _nextId++;
 }
 
+Vendedor::Vendedor(std::string nome){
+    _id = nextId();
+    _nome = nome;
+    _totalVendido = 0;
+}
+
+Vendedor::Vendedor(int id, std::string nome){
+    _id = id;
+    if(id >= _nextId)
+        _nextId = id+1;
+    _nome = nome;
+    _totalVendido = 0;
+}
+
 int Vendedor::getID(){
     return _id;
+}
+
+
+Vendedor* Vendedor::cadastrarVendedor(){
+    std::string nome;
+    std::cout << "Nome: ";
+    std::cin >> nome;
+    return new Vendedor(nome);
 }
 
 std::string Vendedor::getNome(){

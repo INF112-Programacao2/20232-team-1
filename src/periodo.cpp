@@ -11,7 +11,8 @@ Periodo::Periodo(Data inicio, Data fim){
 }
 
 std::string Periodo::getPeriodo(){
-    return this->inicio.getData() + " - " + this->fim.getData();
+
+    return this->inicio.getData() + " " + this->fim.getData();
 }
 
 bool Periodo::contem(Data data){

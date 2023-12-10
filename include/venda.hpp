@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <utility>
 #include "produto.hpp"
 #include "cliente.hpp"
 #include "data.hpp"
@@ -12,20 +13,34 @@
 
 class Venda {
     private:
-        std::vector<Produto*> _produtos;
+        static int _nextId;
+        int _id;
+        std::vector<std::pair<Produto*, float>> _carrinho;
         Cliente* _cliente;
         Vendedor* _vendedor;
         Data _data;
         float _totalSemDesconto;
         float _totalComDesconto;
     public:
-        Venda(std::vector<Produto*> produtos, Cliente* cliente, Vendedor* vendedor, Data data, float totalSemDesconto);
+        Venda();
+        Venda(std::vector<std::pair<Produto*, float>>, Cliente* cliente, Vendedor* vendedor, Data data, float totalSemDesconto);
 
+        Venda(int id, Cliente* cliente, Vendedor* vendedor, int dia, int mes, int ano, float totalSemDesconto);
+
+        static int nextId();
         Venda* cadastrarVenda(std::vector<Produto*> &todosProdutos, std::vector<Cliente*> &todosClientes, std::vector<Vendedor*> &todosVendedores);
-
-        void calcularPrecoTotal(std::vector<Produto*> &carrinho, Data data, Cliente* cliente);
+        int getId();
+        void calcularPrecoTotal(std::vector<std::pair<Produto*, float>> &carrinho, Data &data, Cliente* cliente);
 
         float getValor();
+
+        static void relatorioVendas(std::vector<Venda*> &vendas);
+
+        Cliente* getCliente();
+        Vendedor* getVendedor();
+        std::string getData();
+        std::vector<std::pair<Produto*, float>> getCarrinho();
+
     
 };
 

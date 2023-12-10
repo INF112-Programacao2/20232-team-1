@@ -20,6 +20,18 @@ Data::Data(int d, int m, int a) : dia(d), mes(m), ano(a){
 //    return false;
 //}
 
+int Data::getDia(){
+    return this->dia;
+}
+
+int Data::getMes(){
+    return this->mes;
+}
+
+int Data::getAno(){
+    return this->ano;
+}
+
 
 Data Data::dataHoje(){
     // Get current time
@@ -60,7 +72,7 @@ bool Data::dataValida() const {
 }
 
 std::string Data::getData(){
-    return std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(ano);
+    return std::to_string(dia) + " " + std::to_string(mes) + " " + std::to_string(ano);
 }
 
 Data Data::cadastrarData(){
