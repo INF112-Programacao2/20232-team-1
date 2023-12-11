@@ -16,9 +16,10 @@ class Venda {
         static int _nextId;
         int _id;
         std::vector<std::pair<Produto*, float>> _carrinho;
-        Cliente* _cliente;
+        //Cliente* _cliente;
         Vendedor* _vendedor;
         Data _data;
+        int idCliente;
         float _totalSemDesconto;
         float _totalComDesconto;
     public:
@@ -33,10 +34,11 @@ class Venda {
         static float calcularPrecoTotal(std::vector<std::pair<Produto*, float>> &carrinho, Data &data);
 
         float getValor();
+        int getClienteId();
 
-        static void relatorioVendas(std::vector<Venda*> &vendas);
+        static void relatorioVendas(std::vector<Venda*> &vendas, std::vector<Cliente*> &todosClientes);
 
-        Cliente* getCliente();
+        //Cliente* getCliente();
         Vendedor* getVendedor();
         std::string getData();
         std::vector<std::pair<Produto*, float>> getCarrinho();

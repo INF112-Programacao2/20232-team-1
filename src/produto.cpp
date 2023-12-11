@@ -97,11 +97,13 @@ float Produto::getPrecoSemDesconto(){
 }
 
 Produto* Produto::cadastrarProduto(){
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string nome;
     float preco;
     float estoque;
     std::cout << "Nome do produto: ";
-    std::cin >> nome;
+    std::getline(std::cin, nome);
     std::cout << "Preço: ";
     std::cin >> preco;
     std::cout << "Estoque: ";

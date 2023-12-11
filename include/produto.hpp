@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <limits>
 #include "periodo.hpp"
 #include "data.hpp"
 

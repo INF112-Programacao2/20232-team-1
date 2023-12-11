@@ -27,7 +27,9 @@ void Gerenciador::carregarRegistros() {
     std::ifstream clientesFile("clientes.txt");
     int idCliente;
     std::string nomeCliente;
-    while (clientesFile >> idCliente >> nomeCliente) {
+    while (clientesFile >> idCliente) {
+        std::getline(clientesFile, nomeCliente);
+        nomeCliente = nomeCliente.substr(1);
         inserirCliente(new Cliente(idCliente, nomeCliente));
     }
     clientesFile.close();
@@ -36,7 +38,9 @@ void Gerenciador::carregarRegistros() {
     std::ifstream vendedoresFile("vendedores.txt");
     int idVendedor;
     std::string nomeVendedor;
-    while (vendedoresFile >> idVendedor >> nomeVendedor) {
+    while (vendedoresFile >> idVendedor) {
+        std::getline(vendedoresFile, nomeVendedor);
+        nomeVendedor = nomeVendedor.substr(1);
         inserirVendedor(new Vendedor(idVendedor, nomeVendedor));
     }
     vendedoresFile.close();
@@ -53,10 +57,22 @@ void Gerenciador::carregarRegistros() {
     int diaFim;
     int mesFim;
     int anoFim;
-    while (produtosFile >> idProduto >> nomeProduto >> precoProduto >> estoqueProduto >> diaInicio >> mesInicio >> anoInicio >> diaFim >> mesFim >> anoFim) {
-        inserirProduto(new Produto(idProduto, nomeProduto, precoProduto, estoqueProduto, diaInicio, mesInicio, anoInicio, diaFim, mesFim, anoFim));
+    std::string linha;
+    while (std::getline(produtosFile, linha)) {
+        std::istringstream iss(linha);
+        if (iss >> idProduto) {
+            std::getline(iss, nomeProduto, '\t');
+            if (iss >> precoProduto >> estoqueProduto >> diaInicio >> mesInicio >> anoInicio >> diaFim >> mesFim >> anoFim) {
+                inserirProduto(new Produto(idProduto, nomeProduto, precoProduto, estoqueProduto, diaInicio, mesInicio, anoInicio, diaFim, mesFim, anoFim));
+            } else {
+                std::cout << "Erro ao ler informações do produto!" << std::endl;
+            }
+        } else {
+            std::cout << "Erro ao ler ID do produto!" << std::endl;
+        }
     }
     produtosFile.close();
+    
 
     // Ler registros de vendas do arquivo de texto "vendas.txt"
     std::ifstream vendasFile("vendas.txt");
@@ -75,9 +91,10 @@ void Gerenciador::carregarRegistros() {
 
 
 void Gerenciador::realizarVenda(int id, Cliente* cliente, Vendedor* vendedor, int dia, int mes, int ano, float valorVenda){
+    float valorVendaComDesconto = valorVenda - cliente->calculaDesconto(valorVenda);
+    vendedor->realizarVenda(valorVendaComDesconto);
+    cliente = cliente->realizarCompra(valorVendaComDesconto, clientes);
     Venda* venda = new Venda(id, cliente, vendedor, dia, mes, ano, valorVenda);
-    vendedor->realizarVenda(venda->getValor());
-    cliente->realizarCompra(venda->getValor(), clientes);
     inserirVenda(venda);
 }
 
@@ -85,7 +102,11 @@ void Gerenciador::salvarRegistros(){
     // Gravar registros de clientes no arquivo de texto "clientes.txt"
     std::ofstream clientesFile("clientes.txt");
     for(Cliente* cliente : clientes){
-        clientesFile << cliente->getID() << " " << cliente->getNome() << std::endl;
+        std::string nome = cliente->getNome();
+        while(nome[0] == '*'){
+            nome = nome.substr(1);
+        }
+        clientesFile << cliente->getID() << " " << nome << std::endl;
     }
     clientesFile.close();
 
@@ -97,13 +118,13 @@ void Gerenciador::salvarRegistros(){
 
     std::ofstream produtosFile("produtos.txt");
     for(Produto* produto : produtos){
-        produtosFile << produto->getID() << " " << produto->getNome() << " " << produto->getPrecoSemDesconto() << " " << produto->getEstoque() << " " << produto->getPeriodoPromocao() << std::endl;
+        produtosFile << produto->getID() << " " << produto->getNome() << "\t" << produto->getPrecoSemDesconto() << " " << produto->getEstoque() << " " << produto->getPeriodoPromocao() << std::endl;
     }
     produtosFile.close();
 
     std::ofstream vendasFile("vendas.txt");
     for(Venda* venda : vendas){
-        vendasFile << venda->getId() << " " << venda->getCliente()->getID() << " " << venda->getVendedor()->getID() << " " << venda->getValor() << " " << venda->getData() << std::endl;
+        vendasFile << venda->getId() << " " << venda->getClienteId() << " " << venda->getVendedor()->getID() << " " << venda->getValor() << " " << venda->getData() << std::endl;
     }
     vendasFile.close();
 
@@ -338,13 +359,14 @@ void Gerenciador::menuVendas(){
 }
 
 void Gerenciador::menuVendasRelatorios(){
-    Venda::relatorioVendas(vendas);
+    Venda::relatorioVendas(vendas, clientes);
 }
 
 void Gerenciador::menuVendasCadastrar(){
     Venda* venda;
     venda = venda->cadastrarVenda(produtos, clientes, vendedores);
-    inserirVenda(venda);
+    if(venda != nullptr)
+        inserirVenda(venda);
 }
 
 void Gerenciador::menuVendasRemover(){

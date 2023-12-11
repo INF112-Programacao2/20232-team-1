@@ -7,7 +7,7 @@
 class ClienteOuro : public Cliente{
     public:
         ClienteOuro(Cliente* cliente);
-        ClienteOuro(ClientePrata* cliente);
+        //ClienteOuro(ClientePrata* cliente);
         virtual float calculaDesconto(float valor) override;
         virtual std::string getNome() override;
 };

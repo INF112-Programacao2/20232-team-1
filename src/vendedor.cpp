@@ -27,9 +27,11 @@ int Vendedor::getID(){
 
 
 Vendedor* Vendedor::cadastrarVendedor(){
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string nome;
     std::cout << "Nome: ";
-    std::cin >> nome;
+    std::getline(std::cin, nome);
     return new Vendedor(nome);
 }
 

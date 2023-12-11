@@ -12,7 +12,7 @@ Cliente::Cliente(std::string nome):
 Cliente::Cliente(){}
 
 Cliente::~Cliente(){
-    delete this;
+    //delete this;
 }
 
 Cliente::Cliente(int id, std::string nome){
@@ -36,43 +36,49 @@ int Cliente::getID(){
 }
 
 Cliente* Cliente::cadastrarCliente(){
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string nome;
     std::cout << "Nome: ";
-    std::cin >> nome;
+    std::getline(std::cin, nome);
     return new Cliente(nome);
 }
 
 
-void Cliente::realizarCompra(float valor, std::vector<Cliente*> &clientes){
+Cliente* Cliente::realizarCompra(float valor, std::vector<Cliente*> &clientes){
 
     _totalComprado += valor;
     //_compras.push_back(venda);
-    atualizarNivelCliente(clientes);
+    return atualizarNivelCliente(clientes);
 }
 
-void Cliente::atualizarNivelCliente(std::vector<Cliente*> &clientes){
+Cliente* Cliente::atualizarNivelCliente(std::vector<Cliente*> &clientes){
     if(_totalComprado >= 5000){
-        ClienteOuro* clienteOuro = new ClienteOuro(this); // Create a new ClienteOuro object using the data from the existing Cliente object
+        ClienteOuro* clienteOuro = new ClienteOuro(this);
         // Atualiza o vetor clientes com o novo objeto ClienteOuro
-        for (Cliente* cliente : clientes) {
-            if (cliente == this) {
-                cliente = clienteOuro;
+        for (size_t i = 0; i < clientes.size(); i++) {
+            if (clientes[i] == this) {
+                
+                clientes[i] = clienteOuro;
                 break;
             }
         }
         delete this; // Libera a memória do objeto Cliente antigo
+        return clienteOuro;
     } else if(_totalComprado >= 1000){
         ClientePrata* clientePrata = new ClientePrata(this);
         // Atualiza o vetor clientes com o novo objeto ClientePrata
-        for (Cliente* cliente : clientes) {
-            if (cliente == this) {
-                cliente = clientePrata;
+        // Atualiza o vetor clientes com o novo objeto ClienteOuro
+        for (size_t i = 0; i < clientes.size(); i++) {
+            if (clientes[i] == this) {
+                clientes[i] = clientePrata;
                 break;
             }
         }
         delete this; // Libera a memória do objeto Cliente antigo
+        return clientePrata;
     }
-    
+    return nullptr;
     
 }
 

@@ -1,6 +1,6 @@
 # Variáveis para o compilador e as opções de compilação
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17
+CXXFLAGS = -Wall -Wextra -std=c++17 -g
 
 # Variável para o nome do executável final
 TARGET = gerenciador

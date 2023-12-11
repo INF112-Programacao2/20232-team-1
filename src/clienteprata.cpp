@@ -2,8 +2,12 @@
 
 
 ClientePrata::ClientePrata(Cliente* cliente){
+    std::string nome = cliente->getNome();
+    while(nome[0] == '*'){
+        nome = nome.substr(1);
+    }
     _id = cliente->getID();
-    _nome = cliente->getNome();
+    _nome = nome;
     _totalComprado = cliente->getTotalComprado();
 }
 

@@ -5,6 +5,7 @@
 #include <vector>
 //#include "venda.hpp"
 #include <iomanip>
+#include <limits>
 
 class Cliente{
     protected:
@@ -26,8 +27,8 @@ class Cliente{
 
         static int nextId();
  
-        void realizarCompra(float valor, std::vector<Cliente*> &clientes);
-        void atualizarNivelCliente(std::vector<Cliente*> &clientes);
+        Cliente* realizarCompra(float valor, std::vector<Cliente*> &clientes);
+        Cliente* atualizarNivelCliente(std::vector<Cliente*> &clientes);
 
         int getID();
 
