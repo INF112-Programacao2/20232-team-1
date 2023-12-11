@@ -57,13 +57,14 @@ void Gerenciador::carregarRegistros() {
     int diaFim;
     int mesFim;
     int anoFim;
+    float percDesconto;
     std::string linha;
     while (std::getline(produtosFile, linha)) {
         std::istringstream iss(linha);
         if (iss >> idProduto) {
             std::getline(iss, nomeProduto, '\t');
-            if (iss >> precoProduto >> estoqueProduto >> diaInicio >> mesInicio >> anoInicio >> diaFim >> mesFim >> anoFim) {
-                inserirProduto(new Produto(idProduto, nomeProduto, precoProduto, estoqueProduto, diaInicio, mesInicio, anoInicio, diaFim, mesFim, anoFim));
+            if (iss >> precoProduto >> estoqueProduto >> diaInicio >> mesInicio >> anoInicio >> diaFim >> mesFim >> anoFim >> percDesconto) {
+                inserirProduto(new Produto(idProduto, nomeProduto, precoProduto, estoqueProduto, diaInicio, mesInicio, anoInicio, diaFim, mesFim, anoFim, percDesconto));
             } else {
                 std::cout << "Erro ao ler informações do produto!" << std::endl;
             }
@@ -118,7 +119,7 @@ void Gerenciador::salvarRegistros(){
 
     std::ofstream produtosFile("produtos.txt");
     for(Produto* produto : produtos){
-        produtosFile << produto->getID() << " " << produto->getNome() << "\t" << produto->getPrecoSemDesconto() << " " << produto->getEstoque() << " " << produto->getPeriodoPromocao() << std::endl;
+        produtosFile << produto->getID() << " " << produto->getNome() << "\t" << produto->getPrecoSemDesconto() << " " << produto->getEstoque() << " " << produto->getPeriodoPromocao() << " " << produto->getPercDesconto() << std::endl;
     }
     produtosFile.close();
 

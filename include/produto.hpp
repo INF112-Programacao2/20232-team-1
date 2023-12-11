@@ -22,7 +22,7 @@ class Produto{
         float _percentualDesconto;
     public:
         Produto(std::string nome, float preco, float estoque);
-        Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim);
+        Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim, float percDesconto);
 
 
 
@@ -35,6 +35,7 @@ class Produto{
         float getPrecoSemDesconto();
 
         void setDesconto(float valor);
+        float getPercDesconto();
 
         int getID();
 

@@ -7,7 +7,7 @@ Produto::Produto(std::string nome, float preco, float estoque) :
 
 
 
-Produto::Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim){
+Produto::Produto(int id, std::string nome, float preco,float estoque, int diaInicio, int mesInicio, int anoInicio, int diaFim, int mesFim, int anoFim,float percDesconto){
     _id = id;
     if(_id >= _nextId){
         _nextId = _id + 1;
@@ -18,8 +18,12 @@ Produto::Produto(int id, std::string nome, float preco,float estoque, int diaIni
     Data inicioPromocao = Data(diaInicio, mesInicio, anoInicio);
     Data fimPromocao = Data(diaFim, mesFim, anoFim);
     _periodoPromocao = Periodo(inicioPromocao, fimPromocao);
-    _percentualDesconto = 0.1;
+    _percentualDesconto = percDesconto;
 
+}
+
+float Produto::getPercDesconto(){
+    return _percentualDesconto;
 }
 
 int Produto::nextId(){
