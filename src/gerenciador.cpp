@@ -24,7 +24,7 @@ const char* IdInexistente::what() const noexcept {
 
 void Gerenciador::carregarRegistros() {
     // Ler registros de clientes do arquivo de texto "clientes.txt"
-    std::ifstream clientesFile("clientes.txt");
+    std::ifstream clientesFile("data/clientes.txt");
     int idCliente;
     std::string nomeCliente;
     while (clientesFile >> idCliente) {
@@ -35,7 +35,7 @@ void Gerenciador::carregarRegistros() {
     clientesFile.close();
 
     // Ler registros de vendedores do arquivo de texto "vendedores.txt"
-    std::ifstream vendedoresFile("vendedores.txt");
+    std::ifstream vendedoresFile("data/vendedores.txt");
     int idVendedor;
     std::string nomeVendedor;
     while (vendedoresFile >> idVendedor) {
@@ -46,7 +46,7 @@ void Gerenciador::carregarRegistros() {
     vendedoresFile.close();
 
     // Ler registros de produtos do arquivo de texto "produtos.txt"
-    std::ifstream produtosFile("produtos.txt");
+    std::ifstream produtosFile("data/produtos.txt");
     int idProduto;
     std::string nomeProduto;
     float precoProduto;
@@ -76,7 +76,7 @@ void Gerenciador::carregarRegistros() {
     
 
     // Ler registros de vendas do arquivo de texto "vendas.txt"
-    std::ifstream vendasFile("vendas.txt");
+    std::ifstream vendasFile("data/vendas.txt");
     int idVenda;
     float valorVenda;
     int dia, mes, ano;
@@ -101,7 +101,7 @@ void Gerenciador::realizarVenda(int id, Cliente* cliente, Vendedor* vendedor, in
 
 void Gerenciador::salvarRegistros(){
     // Gravar registros de clientes no arquivo de texto "clientes.txt"
-    std::ofstream clientesFile("clientes.txt");
+    std::ofstream clientesFile("data/clientes.txt");
     for(Cliente* cliente : clientes){
         std::string nome = cliente->getNome();
         while(nome[0] == '*'){
@@ -111,19 +111,19 @@ void Gerenciador::salvarRegistros(){
     }
     clientesFile.close();
 
-    std::ofstream vendedoresFile("vendedores.txt");
+    std::ofstream vendedoresFile("data/vendedores.txt");
     for(Vendedor* vendedor : vendedores){
         vendedoresFile << vendedor->getID() << " " << vendedor->getNome() << std::endl;
     }
     vendedoresFile.close();
 
-    std::ofstream produtosFile("produtos.txt");
+    std::ofstream produtosFile("data/produtos.txt");
     for(Produto* produto : produtos){
         produtosFile << produto->getID() << " " << produto->getNome() << "\t" << produto->getPrecoSemDesconto() << " " << produto->getEstoque() << " " << produto->getPeriodoPromocao() << " " << produto->getPercDesconto() << std::endl;
     }
     produtosFile.close();
 
-    std::ofstream vendasFile("vendas.txt");
+    std::ofstream vendasFile("data/vendas.txt");
     for(Venda* venda : vendas){
         vendasFile << venda->getId() << " " << venda->getClienteId() << " " << venda->getVendedor()->getID() << " " << venda->getValor() << " " << venda->getData() << std::endl;
     }
