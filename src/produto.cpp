@@ -47,17 +47,17 @@ Produto* Produto::getProdutoById(int id, std::vector<Produto*> &produtos){
 
 void Produto::relatorioProdutos(std::vector<Produto*> &produtos, Data data){
     int i = 0;
-    while( i < 44){
+    while( i < 54){
         std::cout << "-";
         i++;
     }
     std::cout << std::endl;
-    std::cout << std::setw(6) << "Id" << std::setw(15) << "Nome" << std::setw(15) << "Preço" << std::setw(8) << "Estoque" << std::endl;
+    std::cout << std::setw(6) << "Id" << std::setw(25) << "Nome" << std::setw(16) << "Preço" << std::setw(8) << "Estoque" << std::endl;
     for(Produto* produto : produtos){
-        std::cout << std::setw(6) << produto->getID() << std::setw(15) << produto->getNome() << std::setw(15) << produto->getPreco(data) << std::setw(8) << produto->getEstoque() << std::endl;
+        std::cout << std::setw(6) << produto->getID() << std::setw(25) << produto->getNome() << std::setw(15) << produto->getPreco(data) << std::setw(8) << produto->getEstoque() << std::endl;
     }
     i = 0;
-    while( i < 44){
+    while( i < 54){
         std::cout << "-";
         i++;
     }

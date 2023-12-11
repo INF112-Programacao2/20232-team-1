@@ -10,7 +10,8 @@
 
 
 class IdInexistente : public std::exception{
-    virtual const char* what() const noexcept override;
+    public:
+        virtual const char* what() const noexcept override;
 };
 
 class Gerenciador{
@@ -48,6 +49,8 @@ class Gerenciador{
         void menuProdutosRelatorios();
         void menuProdutosCadastrar();
         void menuProdutosRemover();
+        void menuProdutosCadastrarPromocao();
+        void menuProdutosCadastrarCompra();
 
         void menuClientesCadastrar();
         void menuClientesRemover();

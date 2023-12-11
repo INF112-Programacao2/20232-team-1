@@ -203,9 +203,12 @@ void Gerenciador::criarMenu(){
 void Gerenciador::menuProdutos(){
     int menuSelect;
     std::cout << "1 - Cadastrar Produto" << std::endl;
-    std::cout << "2 - Remover Produto" << std::endl;
-    std::cout << "3 - Relatório de Produtos" << std::endl;
-    std::cout << "4 - Voltar" << std::endl;
+    std::cout << "2 - Cadastrar Promocão" << std::endl;
+    std::cout << "3 - Cadastrar Compra" << std::endl;
+    std::cout << "4 - Remover Produto" << std::endl;
+    std::cout << "5 - Relatório de Produtos" << std::endl;
+    
+    std::cout << "6 - Voltar" << std::endl;
 
     std::cout << "Selecione uma opção: ";
     std::cin >> menuSelect;
@@ -214,23 +217,49 @@ void Gerenciador::menuProdutos(){
             menuProdutosCadastrar();
             break;
         case 2:
-            menuProdutosRemover();
+            menuProdutosCadastrarPromocao();
             break;
         case 3:
-            menuProdutosRelatorios();
+            menuProdutosCadastrarCompra();
             break;
         case 4:
-            criarMenu();
+            menuProdutosRemover();
+            break;
+        case 5:
+            menuProdutosRelatorios();
+            break;
+        case 6:
             break;
         default:
             menuProdutos();
     }
 }
 
+void Gerenciador::menuProdutosCadastrarPromocao(){
+    Produto::relatorioProdutos(produtos, Data::dataHoje());
+    int id;
+    std::cout << "ID do produto: ";
+    std::cin >> id;
+    Produto* produto = Produto::getProdutoById(id, produtos);
+    produto->cadastrarPromocao();
+}
+
+
+void Gerenciador::menuProdutosCadastrarCompra(){
+    Produto::relatorioProdutos(produtos, Data::dataHoje());
+    int id;
+    std::cout << "ID do produto: ";
+    std::cin >> id;
+    Produto* produto = Produto::getProdutoById(id, produtos);
+    std::cout << "Quantidade: ";
+    int quantidade;
+    std::cin >> quantidade;
+    produto->diminuirEstoque(-quantidade);
+}
+
 
 void Gerenciador::menuProdutosRelatorios(){
-    Data dataHoje;
-    Produto::relatorioProdutos(produtos, dataHoje.dataHoje());
+    Produto::relatorioProdutos(produtos, Data::dataHoje());
 }
 
 void Gerenciador::menuProdutosCadastrar(){
@@ -239,10 +268,16 @@ void Gerenciador::menuProdutosCadastrar(){
 }
 
 void Gerenciador::menuProdutosRemover(){
+    Produto::relatorioProdutos(produtos, Data::dataHoje());
     int id;
     std::cout << "ID do produto: ";
     std::cin >> id;
-    removerProduto(id);
+    
+    try{
+        removerProduto(id);
+    } catch(IdInexistente &e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void Gerenciador::menuClientes(){
@@ -265,7 +300,6 @@ void Gerenciador::menuClientes(){
             menuClientesRelatorios();
             break;
         case 4:
-            criarMenu();
             break;
         default:
             menuProdutos();
@@ -283,10 +317,16 @@ void Gerenciador::menuClientesCadastrar(){
 }
 
 void Gerenciador::menuClientesRemover(){
+    Cliente::relatorioClientes(clientes);
     int id;
     std::cout << "ID do cliente: ";
     std::cin >> id;
-    removerCliente(id);
+    
+    try{
+        removerCliente(id);
+    } catch(IdInexistente &e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void Gerenciador::menuVendedores(){
@@ -308,7 +348,6 @@ void Gerenciador::menuVendedores(){
             menuVendedoresRelatorios();
             break;
         case 4:
-            criarMenu();
             break;
         default:
             menuVendedores();
@@ -325,10 +364,16 @@ void Gerenciador::menuVendedoresCadastrar(){
 }
 
 void Gerenciador::menuVendedoresRemover(){
+    Vendedor::relatorioVendedores(vendedores);
     int id;
     std::cout << "ID do vendedor: ";
     std::cin >> id;
-    removerVendedor(id);
+    
+    try{
+        removerVendedor(id);
+    } catch(IdInexistente &e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
 
@@ -351,7 +396,6 @@ void Gerenciador::menuVendas(){
             menuVendasRelatorios();
             break;
         case 4:
-            criarMenu();
             break;
         default:
             menuVendas();
@@ -370,10 +414,18 @@ void Gerenciador::menuVendasCadastrar(){
 }
 
 void Gerenciador::menuVendasRemover(){
+    Venda::relatorioVendas(vendas, clientes);
     int id;
     std::cout << "ID da venda: ";
     std::cin >> id;
-    removerVenda(id);
+    
+    
+
+    try{
+        removerVenda(id);
+    } catch(IdInexistente &e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
 
